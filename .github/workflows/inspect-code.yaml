@@ -1,0 +1,33 @@
+name: InspectCode
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+  
+jobs:
+  inspect-code:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.x
+
+      - name: Install ReSharper CLI
+        run: dotnet tool install -g JetBrains.ReSharper.GlobalTools
+
+      - name: Inspect code
+        run: jb inspectcode my-razor-page.sln -o=results.sarif
+
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: results.sarif
+
+    permissions:
+      security-events: write
