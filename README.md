@@ -13,5 +13,5 @@ dotnet tool install -g JetBrains.ReSharper.GlobalTools
 ### Usage
 
 ```sh
-jb inspectcode -o="results-local.sarif" my-razor-page.sln
+jb inspectcode -e=WARNING -o="results-local.sarif" my-razor-page.sln
 ```
